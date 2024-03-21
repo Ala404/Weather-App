@@ -2,14 +2,16 @@ import { ref } from "vue";
 import { defineStore } from "pinia";
 import axios from "axios";
 import { apiKey, weatherApiKey } from "../main";
-// console.log(apiKey);
+
 let queryTimeout = ref(null);
+
 
 export const useMainStore = defineStore("main", {
   state: () => ({
     mapboxSearchResults: null,
     searchError: null,
     weatherData: null,
+    savedCities: null,
   }),
   actions: {
     async getSearchResults(searchQuery) {
@@ -31,32 +33,38 @@ export const useMainStore = defineStore("main", {
         }
       }, 300);
     },
+    
     ///weather api
       async getWeatherData (route) {
   try {
-    const weatherData = await axios.get(
-      `https://api.openweathermap.org/data/3.0/onecall?lat=${route.query.lat}&lon=${route.query.lng}&appid=${weatherApiKey}`
+    const response = await axios.get(
+      `https://api.openweathermap.org/data/2.5/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=${weatherApiKey}&units=imperial`
     );
+    this.weatherData = response.data;
+    console.log(this.weatherData);
 
     // cal current date & time
     const localOffset = new Date().getTimezoneOffset() * 60000;
-    const utc = weatherData.data.current.dt * 1000 + localOffset;
-    weatherData.data.currentTime =
-      utc + 1000 * weatherData.data.timezone_offset;
+    const utc = this.weatherData.current.dt * 1000 + localOffset;
+    this.weatherData.currentTime =
+      utc + 1000 * this.weatherData.timezone_offset;
 
     // cal hourly weather offset
-    weatherData.data.hourly.forEach((hour) => {
+    this.weatherData.hourly.forEach((hour) => {
       const utc = hour.dt * 1000 + localOffset;
-      hour.currentTime =
-        utc + 1000 * weatherData.data.timezone_offset;
+      hour.currentTime = utc + 1000 * this.weatherData.timezone_offset;
     });
 
-    return weatherData.data;
+    return this.weatherData;
   } catch (err) {
     console.log(err);
   }
   
-}
+},
+saveCity(city) {
+  this.savedCities = city;
+  
+  },
   },
 });
 

@@ -17,6 +17,8 @@
         ></i>
         <i
           class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"
+          @click="addCity"
+          v-if="route.query"
         ></i>
       </div>
 
@@ -63,6 +65,34 @@
 import { RouterLink } from "vue-router";
 import { ref } from "vue";
 import BaseModal from "./BaseModal.vue";
+import { uid } from "uid";
+import { useMainStore } from "../stores/main";
+import { useRouter, useRoute } from "vue-router";
+
+const mainStore = useMainStore();
+const router = useRouter();
+const route = useRoute();
+
+
+
+const addCity = () => {
+  const locationObj = {
+      id: uid(),
+      state: route.params.state,
+      city: route.params.city,
+      coords: {
+        lat: route.query.lat,
+        lng: route.query.lng,
+      },
+    };
+
+  mainStore.saveCity(locationObj);
+  let query = Object.assign({}, route.query);
+  delete query.preview;
+    router.replace({ query });
+};
+
+
 
 const modalActive = ref(null);
 const toggleModal = () => {

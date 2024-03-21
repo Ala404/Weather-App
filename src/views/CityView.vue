@@ -34,11 +34,12 @@
         }}
       </p>
       <p class="text-8xl mb-8">
-        {{ Math.round(mainStore.weatherData.current.temp) }}&deg;
+        <!--convert fahrenheit to celsius C = (F-32)/1.8--> 
+        {{ Math.round((mainStore.weatherData.current.temp-32)/1.8) }}&deg;
       </p>
       <p>
         Feels like
-        {{ Math.round(mainStore.weatherData.current.feels_like) }} &deg;
+        {{ Math.round((mainStore.weatherData.current.feels_like-32)/1.8)  }} &deg;
       </p>
       <p class="capitalize">
         {{ mainStore.weatherData.current.weather[0].description }}
@@ -81,7 +82,7 @@
               alt=""
             />
             <p class="text-xl">
-              {{ Math.round(hourData.temp) }}&deg;
+              {{ Math.round((hourData.temp-32)/1.8 ) }}&deg;
             </p>
           </div>
         </div>
@@ -117,8 +118,8 @@
             alt=""
           />
           <div class="flex gap-2 flex-1 justify-end">
-            <p>H: {{ Math.round(day.temp.max) }}</p>
-            <p>L: {{ Math.round(day.temp.min) }}</p>
+            <p>H: {{ Math.round((day.temp.max-32)/1.8 ) }}</p>
+            <p>L: {{ Math.round((day.temp.min-32)/1.8 ) }}</p>
           </div>
         </div>
       </div>
@@ -135,6 +136,7 @@ const route = useRoute();
 const mainStore = useMainStore();
 
 onBeforeMount(() => {
+  console.log("from component:",mainStore.weatherData);
   mainStore.getWeatherData(route);
 });
 

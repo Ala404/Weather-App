@@ -41,7 +41,7 @@
 </template>
 
 <script setup>
-import { ref } from "vue";
+import { ref, onUnmounted } from "vue";
 import { useRouter } from "vue-router";
 
 const router = useRouter();
@@ -61,4 +61,8 @@ import { useMainStore } from "../stores/main";
 
 const mainStore = useMainStore();
 const searchQuery = ref("");
+
+onUnmounted(() => {
+  mainStore.mapboxSearchResults = null;
+});
 </script>
