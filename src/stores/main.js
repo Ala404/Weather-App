@@ -11,7 +11,7 @@ export const useMainStore = defineStore("main", {
     mapboxSearchResults: null,
     searchError: null,
     weatherData: null,
-    savedCities: null,
+    savedCities: [],
   }),
   actions: {
     async getSearchResults(searchQuery) {
@@ -41,7 +41,6 @@ export const useMainStore = defineStore("main", {
       `https://api.openweathermap.org/data/2.5/onecall?lat=${route.query.lat}&lon=${route.query.lng}&exclude={part}&appid=${weatherApiKey}&units=imperial`
     );
     this.weatherData = response.data;
-    console.log(this.weatherData);
 
     // cal current date & time
     const localOffset = new Date().getTimezoneOffset() * 60000;
@@ -61,10 +60,37 @@ export const useMainStore = defineStore("main", {
   }
   
 },
+
+ async getCities ()  {
+  if (Array.isArray(this.savedCities)) {
+
+    const requests = [];
+    this.savedCities.forEach((city) => {
+      requests.push(
+        axios.get(
+          `https://api.openweathermap.org/data/2.5/weather?lat=${city.coords.lat}&lon=${city.coords.lng}&appid=${weatherApiKey}&units=imperial`
+        )
+      );
+    });
+
+    const weatherData = await Promise.all(requests);
+
+    weatherData.forEach((value, index) => {
+      this.savedCities[index].weather = value.data;
+    });
+  }
+},
+
 saveCity(city) {
-  this.savedCities = city;
+  this.savedCities.push(city);
   
   },
+  removeCity(id) {
+    console.log('ID',id);
+    this.savedCities = this.savedCities.filter((city) => city.id !== id);
+    console.log('after',this.savedCities);
   },
+  },
+  persist: true,
 });
 

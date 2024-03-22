@@ -124,21 +124,34 @@
         </div>
       </div>
     </div>
+    <div
+      v-if="route.query"
+      class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
+      @click="removeCity()"
+    >
+      <i class="fa-solid fa-trash"></i>
+      <p>Remove City</p>
+    </div>
   </div>
 </template>
 
 <script setup>
 import { useMainStore } from '@/stores/main';
 import { onBeforeMount } from 'vue';
-import { useRoute } from 'vue-router';
+import { useRoute, useRouter } from 'vue-router';
 
 const route = useRoute();
+const router = useRouter();
 const mainStore = useMainStore();
 
 onBeforeMount(() => {
-  console.log("from component:",mainStore.weatherData);
   mainStore.getWeatherData(route);
 });
+
+const removeCity = () => {
+  mainStore.removeCity(route.query.id);
+  router.push({name: 'home'});
+}
 
 
 </script>

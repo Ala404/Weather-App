@@ -37,12 +37,22 @@
         </template>
       </ul>
     </div>
+    <div class="flex flex-col gap-4">
+      <Suspense>
+        <CityList />
+        <template #fallback>
+          <CityCardSkeleton />
+        </template>
+      </Suspense>
+    </div>
   </main>
 </template>
 
 <script setup>
-import { ref, onUnmounted } from "vue";
+import { ref, onUnmounted, onBeforeMount } from "vue";
 import { useRouter } from "vue-router";
+import CityList from "../components/CityList.vue";
+import CityCardSkeleton from "../components/CityCardSkeleton.vue";
 
 const router = useRouter();
 const previewCity = (searchResult) => {
@@ -61,6 +71,10 @@ import { useMainStore } from "../stores/main";
 
 const mainStore = useMainStore();
 const searchQuery = ref("");
+
+onBeforeMount(() => {
+  console.log("from home:",mainStore.savedCities);
+});
 
 onUnmounted(() => {
   mainStore.mapboxSearchResults = null;

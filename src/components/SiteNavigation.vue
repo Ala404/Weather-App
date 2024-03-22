@@ -18,7 +18,7 @@
         <i
           class="fa-solid fa-plus text-xl hover:text-weather-secondary duration-150 cursor-pointer"
           @click="addCity"
-          v-if="route.query"
+          v-if="route.query.preview"
         ></i>
       </div>
 
@@ -89,7 +89,8 @@ const addCity = () => {
   mainStore.saveCity(locationObj);
   let query = Object.assign({}, route.query);
   delete query.preview;
-    router.replace({ query });
+  query.id = locationObj.id;
+  router.replace({ query });
 };
 
 

@@ -2,6 +2,7 @@ import './assets/tailwind.css'
 
 import { createApp } from 'vue'
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from "pinia-plugin-persistedstate";
 
 import App from './App.vue'
 import router from './router'
@@ -14,7 +15,10 @@ export const weatherApiKey = "7efa332cf48aeb9d2d391a51027f1a71";
 
 const app = createApp(App)
 
-app.use(createPinia())
+const pinia = createPinia();
+pinia.use(piniaPluginPersistedstate);
+
+app.use(pinia);
 app.use(router)
 
 app.mount('#app')
