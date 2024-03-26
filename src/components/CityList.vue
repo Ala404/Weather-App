@@ -1,5 +1,5 @@
 <template>
-  <div v-for="city in mainStore.savedCities" :key="city.id">
+  <div v-for="city in mainStore.savedCities" :key="city.id" >
     <CityCard :city="city" @click="goToCityView(city)" />
     
   </div>
