@@ -81,8 +81,9 @@ export const useMainStore = defineStore("main", {
   }
 },
 
-saveCity(city) {
-  this.savedCities.push(city);
+  saveCity(city) {
+    console.log("this is the city obj:",city);
+    this.savedCities.push(city);
   
   },
   removeCity(id) {
@@ -90,6 +91,18 @@ saveCity(city) {
     this.savedCities = this.savedCities.filter((city) => city.id !== id);
     console.log('after',this.savedCities);
   },
+  },
+  getters: {
+    getCurrentTime() {
+      const localOffset = new Date().getTimezoneOffset() * 60000;
+      const utc = this.weatherData.current.dt * 1000 + localOffset;
+      return utc + 1000 * this.weatherData.timezone_offset;
+    },
+    getHourlyTime(dt) {
+      const localOffset = new Date().getTimezoneOffset() * 60000;
+      const utc = dt * 1000 + localOffset;
+      return utc + 1000 * this.weatherData.timezone_offset;
+    },
   },
   persist: true,
 });

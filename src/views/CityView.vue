@@ -11,9 +11,10 @@
       </p>
     </div>
     <!-- Weather Overview -->
-    <div class="flex flex-col items-center text-white py-12">
+    <div v-if="mainStore.weatherData" class="flex flex-col items-center text-white py-12">
       <h1 class="text-4xl mb-2">{{ route.params.city }}</h1>
-      <p class="text-sm mb-12">
+      <p 
+      class="text-sm mb-12">
         {{
           new Date(mainStore.weatherData.currentTime).toLocaleDateString(
             "en-us",
@@ -33,11 +34,11 @@
           )
         }}
       </p>
-      <p class="text-8xl mb-8">
+      <p class="text-8xl mb-8" v-if="mainStore.weatherData">
         <!--convert fahrenheit to celsius C = (F-32)/1.8--> 
         {{ Math.round((mainStore.weatherData.current.temp-32)/1.8) }}&deg;
       </p>
-      <p>
+      <p v-if="mainStore.weatherData" >
         Feels like
         {{ Math.round((mainStore.weatherData.current.feels_like-32)/1.8)  }} &deg;
       </p>
@@ -125,7 +126,7 @@
       </div>
     </div>
     <div
-      v-if="route.query"
+      v-if="!route.query.preview"
       class="flex items-center gap-2 py-12 text-white cursor-pointer duration-150 hover:text-red-500"
       @click="removeCity()"
     >
