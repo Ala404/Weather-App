@@ -59,7 +59,8 @@ const previewCity = (searchResult) => {
   const [city, state] = searchResult.title.split(",");
   router.push({
     name: "cityView",
-    params: { state: state.trim(), city: city.trim() },
+    //check if it has spaces then trim it
+    params: { state: state ? state.trim() : " ", city: city.trim() },
     query: {
       lat: searchResult.position.lat,
       lng: searchResult.position.lng,

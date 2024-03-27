@@ -13,24 +13,12 @@ describe("My First Test", () => {
       "/weather/الجزائر/الوادي?lat=33.37663&lng=6.86737&preview=true"
     );
 
+    cy.get(".model").first().click();
+
     //save the city
-    cy.get("#addCity").click();
+    cy.get(".add-city").click();
 
   });
 
-  /* ==== Test Created with Cypress Studio ==== */
-  it('studio-test', function() {
-    /* ==== Generated with Cypress Studio ==== */
-    cy.visit(' http://localhost:5173/');
-    cy.get('.py-2').clear('ا');
-    cy.get('.py-2').type('الوادي');
-    cy.get('.absolute > .py-2').click();
-    cy.get('#addCity').click();
-    cy.get('p.text-2xl').click();
-    cy.get('.flex-1 > .fa-solid').click();
-    cy.get('.p-4 > .text-white').click();
-    cy.get('h3').click();
-    cy.get('.cursor-pointer > p').click();
-    /* ==== End Cypress Studio ==== */
-  });
+
 });
