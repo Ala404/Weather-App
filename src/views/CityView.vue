@@ -60,7 +60,7 @@
     <div class="max-w-screen-md w-full py-12">
       <div class="mx-8 text-white">
         <h2 class="mb-4">Hourly Weather</h2>
-        <div v-if="mainStore.weatherData.hourly"
+        <div v-if="mainStore.getHourlyTime"
         class="flex gap-10 overflow-x-scroll">
           <div
             v-for="hourData in mainStore.weatherData.hourly"

@@ -98,11 +98,13 @@ export const useMainStore = defineStore("main", {
       const utc = this.weatherData.current.dt * 1000 + localOffset;
       return utc + 1000 * this.weatherData.timezone_offset;
     },
-    getHourlyTime(dt) {
-      const localOffset = new Date().getTimezoneOffset() * 60000;
-      const utc = dt * 1000 + localOffset;
-      return utc + 1000 * this.weatherData.timezone_offset;
-    },
+    getHourlyTime() {
+      return this.weatherData.hourly.map((hour) => {
+        const localOffset = new Date().getTimezoneOffset() * 60000;
+        const utc = hour.dt * 1000 + localOffset;
+        return utc + 1000 * this.weatherData.timezone_offset;
+      });
+    }
   },
   persist: true,
 });
